@@ -13,10 +13,9 @@ router = APIRouter(
 )
 
 
-# 1. Registrar un nuevo usuario (POST)
 @router.post("/", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED)
 async def crear_usuario(usuario: UsuarioCreate, db: AsyncSession = Depends(get_db)):
-    # Verificar si el correo electrónico ya está registrado
+  
     resultado = await db.execute(select(Usuario).where(Usuario.email == usuario.email))
     usuario_existente = resultado.scalar_one_or_none()
 
@@ -33,7 +32,6 @@ async def crear_usuario(usuario: UsuarioCreate, db: AsyncSession = Depends(get_d
     return nuevo_usuario
 
 
-# 2. Listar usuarios con filtros y paginación (GET)
 @router.get("/", response_model=List[UsuarioResponse])
 async def obtener_usuarios(
     nombre: Optional[str] = Query(None, description="Búsqueda parcial por nombre"),
@@ -54,7 +52,6 @@ async def obtener_usuarios(
     return resultado.scalars().all()
 
 
-# 3. Obtener un usuario por ID (GET)
 @router.get("/{usuario_id}", response_model=UsuarioResponse)
 async def obtener_usuario_por_id(usuario_id: int, db: AsyncSession = Depends(get_db)):
     resultado = await db.execute(select(Usuario).where(Usuario.id == usuario_id))
@@ -68,7 +65,6 @@ async def obtener_usuario_por_id(usuario_id: int, db: AsyncSession = Depends(get
     return usuario
 
 
-# 4. Actualizar usuario (PUT)
 @router.put("/{usuario_id}", response_model=UsuarioResponse)
 async def actualizar_usuario(
     usuario_id: int,
@@ -92,7 +88,6 @@ async def actualizar_usuario(
     return usuario
 
 
-# 5. Eliminar usuario (DELETE)
 @router.delete("/{usuario_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def eliminar_usuario(usuario_id: int, db: AsyncSession = Depends(get_db)):
     resultado = await db.execute(select(Usuario).where(Usuario.id == usuario_id))

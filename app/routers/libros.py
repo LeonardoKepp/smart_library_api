@@ -13,7 +13,6 @@ router = APIRouter(
 )
 
 
-# 1. Crear un nuevo libro (POST)
 @router.post("/", response_model=LibroResponse, status_code=status.HTTP_201_CREATED)
 async def crear_libro(libro: LibroCreate, db: AsyncSession = Depends(get_db)):
     nuevo_libro = Libro(**libro.model_dump())
@@ -23,7 +22,6 @@ async def crear_libro(libro: LibroCreate, db: AsyncSession = Depends(get_db)):
     return nuevo_libro
 
 
-# 2. Obtener libros con filtros de búsqueda y paginación (GET)
 @router.get("/", response_model=List[LibroResponse])
 async def obtener_libros(
     titulo: Optional[str] = Query(None, description="Búsqueda parcial por título (ej. 'Tomorrows')"),
@@ -33,7 +31,6 @@ async def obtener_libros(
     limit: int = Query(10, ge=1, le=100, description="Cantidad máxima de registros a devolver"),
     db: AsyncSession = Depends(get_db)
 ):
-    # Construcción dinámica de la consulta SQL
     query = select(Libro)
 
     if titulo:
@@ -43,15 +40,12 @@ async def obtener_libros(
     if disponible is not None:
         query = query.where(Libro.disponible == disponible)
 
-    # Aplicamos paginación
     query = query.offset(skip).limit(limit)
 
     resultado = await db.execute(query)
     libros = resultado.scalars().all()
     return libros
 
-
-# 3. Obtener un libro específico por su ID (GET)
 @router.get("/{libro_id}", response_model=LibroResponse)
 async def obtener_libro_por_id(libro_id: int, db: AsyncSession = Depends(get_db)):
     resultado = await db.execute(select(Libro).where(Libro.id == libro_id))
@@ -64,8 +58,6 @@ async def obtener_libro_por_id(libro_id: int, db: AsyncSession = Depends(get_db)
         )
     return libro
 
-
-# 4. Actualizar un libro existente (PUT)
 @router.put("/{libro_id}", response_model=LibroResponse)
 async def actualizar_libro(
     libro_id: int, 
@@ -88,8 +80,6 @@ async def actualizar_libro(
     await db.refresh(libro)
     return libro
 
-
-# 5. Eliminar un libro (DELETE)
 @router.delete("/{libro_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def eliminar_libro(libro_id: int, db: AsyncSession = Depends(get_db)):
     resultado = await db.execute(select(Libro).where(Libro.id == libro_id))

@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 
 
-# 1. Esquema base con validaciones de campos
 class LibroBase(BaseModel):
     titulo: str = Field(
         ...,
@@ -30,12 +29,10 @@ class LibroBase(BaseModel):
     )
 
 
-# 2. Esquema para recibir los datos de creación (POST/PUT)
 class LibroCreate(LibroBase):
     pass
 
 
-# 3. Esquema para devolver respuestas desde la base de datos (GET/POST)
 class LibroResponse(LibroBase):
     id: int
 
