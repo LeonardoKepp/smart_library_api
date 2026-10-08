@@ -39,7 +39,7 @@ Para detener el sistema en cualquier momento, presiona Ctrl + C en tu terminal o
 
 - docker compose down.
 
-## 🛠️ Tecnologías y Stack Utilizado
+## Tecnologías y Stack Utilizado
 
 * **Lenguaje:** Python 3.12
 * **Framework Web:** FastAPI (con validación de datos mediante Pydantic)
@@ -51,7 +51,7 @@ Para detener el sistema en cualquier momento, presiona Ctrl + C en tu terminal o
 ---
 
 <details>
-<summary><b>📂 Ver Estructura del Proyecto</b></summary>
+<summary><b> Ver Estructura del Proyecto</b></summary>
 
 ```text
 smart_library_api/
