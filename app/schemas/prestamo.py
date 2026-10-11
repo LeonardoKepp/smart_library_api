@@ -1,18 +1,17 @@
-from pydantic import BaseModel
-from datetime import date
-from typing import Optional
+from pydantic import BaseModel, Field
+from datetime import datetime
 
 class PrestamoBase(BaseModel):
-    usuario_id: int
-    libro_id: int
+    libro_id: int = Field(..., description="ID del libro que se desea solicitar")
 
 class PrestamoCreate(PrestamoBase):
-    pass 
+    pass
 
-class PrestamoResponse(PrestamoBase):
+class PrestamoResponse(BaseModel):
     id: int
-    fecha_prestamo: date
-    fecha_devolucion: date
+    usuario_id: int
+    libro_id: int
+    fecha_prestamo: datetime
     estado: str
 
     class Config:

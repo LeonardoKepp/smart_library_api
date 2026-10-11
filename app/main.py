@@ -8,6 +8,7 @@ from app.database.database import engine, Base
 from app.routers.libros import router as libros_router
 from app.routers.usuarios import router as usuarios_router
 from app.routers.prestamos import router as prestamos_router
+from app.routers.auth import router as auth_router  
 from app.models import libro, usuario, prestamo
 
 logger = logging.getLogger("uvicorn")
@@ -43,6 +44,7 @@ def create_app() -> FastAPI:
     app.include_router(libros_router)
     app.include_router(usuarios_router)
     app.include_router(prestamos_router)
+    app.include_router(auth_router)  
 
     @app.get("/")
     async def inicio():

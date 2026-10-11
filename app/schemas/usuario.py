@@ -1,6 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
 
-
 class UsuarioBase(BaseModel):
     nombre: str = Field(
         ...,
@@ -19,10 +18,13 @@ class UsuarioBase(BaseModel):
         description="Estado actual del usuario en el sistema"
     )
 
-
 class UsuarioCreate(UsuarioBase):
-    pass
-
+    password: str = Field(
+        ...,
+        min_length=6,
+        description="Contraseña del usuario para autenticación",
+        examples=["securepassword123"]
+    )
 
 class UsuarioResponse(UsuarioBase):
     id: int
